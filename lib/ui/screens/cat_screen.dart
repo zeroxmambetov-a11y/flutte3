@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'cat_bloc.dart';
+import '../bloc/cat_bloc.dart';
+import '../bloc/cat_event.dart';
+import '../bloc/cat_state.dart';
 
 class CatScreen extends StatelessWidget {
   const CatScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CatBloc(),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Кошки')),
-        body: BlocBuilder<CatBloc, dynamic>(
+    return Scaffold(
+      appBar: AppBar(title: const Text('Кошки')),
+      body: Center(
+        child: BlocBuilder<CatBloc, CatState>(
           builder: (context, state) {
             if (state is CatLoadingState) {
-              return const Center(child: CircularProgressIndicator());
+              return const CircularProgressIndicator();
             }
 
             if (state is CatErrorState) {
-              return Center(child: Text(state.message));
+              return Text(
+                state.message,
+                style: const TextStyle(fontSize: 18, color: Colors.red),
+              );
             }
 
             if (state is CatLoadedState) {
@@ -37,13 +41,12 @@ class CatScreen extends StatelessWidget {
               );
             }
 
-            return Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  context.read<CatBloc>().add(GetCatsEvent());
-                },
-                child: const Text('Загрузить котов'),
-              ),
+          
+            return ElevatedButton(
+              onPressed: () {
+                context.read<CatBloc>().add(LoadCatsEvent());
+              },
+              child: const Text('Загрузить котов'),
             );
           },
         ),

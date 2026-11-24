@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'cat_model.dart';
+import '../models/cat_model.dart';
 
 class CatRepository {
   final Dio _dio = Dio(BaseOptions(baseUrl: 'https://api.thecatapi.com'));
@@ -16,3 +16,4 @@ class CatRepository {
     return cats;
   }
 }
+
